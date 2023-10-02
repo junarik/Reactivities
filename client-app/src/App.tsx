@@ -1,32 +1,33 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import axios from 'axios';
-import { Header, List } from 'semantic-ui-react';
+import { useEffect, useState } from "react";
+import "./App.css";
+import axios from "axios";
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
 function App() {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/activities')
-      .then(response => {
-        setActivities(response.data)
-      })
-  }, [])
-
+    axios.get("http://localhost:5000/api/activities").then((response) => {
+      setActivities(response.data);
+    });
+  }, []);
 
   return (
     <div>
-      <Header as="h2" icon="users" content="Reactivities"/>
+      <Typography variant="h4">
+        <PeopleAltIcon />
+        Reactivities
+      </Typography>
       <List>
         {activities.map((activity: any) => (
-            <List.Item key={activity.id}>
-              {activity.title}
-            </List.Item>
-          ))} 
+          <ListItem>
+            <ListItemText key={activity.id} primary={activity.title} />
+          </ListItem>
+        ))}
       </List>
     </div>
-  
-  )
+  );
 }
 
-export default App
+export default App;
