@@ -20,7 +20,11 @@ export default function NavBar({ openForm }) {
           <Breadcrumbs color="inherit">
             <Typography>Reactivities</Typography>
             <Typography variant="button">Activities</Typography>
-            <Button onClick={openForm} variant="outlined" color="inherit">
+            <Button
+              onClick={() => openForm(undefined)}
+              variant="outlined"
+              color="inherit"
+            >
               Create Activity
             </Button>
           </Breadcrumbs>
