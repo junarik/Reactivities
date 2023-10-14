@@ -10,6 +10,7 @@ function App() {
   const [activities, setActivities] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [loading, SetLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     agent.Activities.getList().then((response) => {
@@ -43,20 +44,30 @@ function App() {
   }
 
   function handleCreateOrUpdate(activity) {
+    setSubmitting(true);
     if (activity.id) {
-      const updatedActivities = [
-        ...activities.filter((x) => x.id !== activity.id),
-        activity,
-      ];
-      setActivities(updatedActivities);
-      setSelectedActivity(activity);
+      agent.Activities.update(activity).then(() => {
+        const updatedActivities = [
+          ...activities.filter((x) => x.id !== activity.id),
+          activity,
+        ];
+        setActivities(updatedActivities);
+        setSubmitting(false);
+        setEditMode(false);
+        setSelectedActivity(activity); //*+
+      });
     } else {
       const newActivity = { ...activity, id: uuid() };
-      setActivities([...activities, newActivity]);
-      setSelectedActivity(newActivity);
+      agent.Activities.create(newActivity).then(() => {
+        setActivities([...activities, newActivity]);
+        setSubmitting(false);
+        setSelectedActivity(newActivity); // *-
+        setEditMode(false);
+      });
     }
 
-    setEditMode(false);
+    //setSubmitting(false);
+    //setEditMode(false);
   }
 
   function handleDelete(activity) {
@@ -80,6 +91,8 @@ function App() {
         openForm={handleFormOpen}
         createOrUpdate={handleCreateOrUpdate}
         deleteActivity={handleDelete}
+        submitting={submitting}
+        setSubmitting={setSubmitting}
       />
     </>
   );

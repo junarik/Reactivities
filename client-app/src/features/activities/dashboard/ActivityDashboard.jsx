@@ -16,9 +16,10 @@ export default function ActivityDashboard({
   closeForm,
   createOrUpdate,
   deleteActivity,
+  submitting,
 }) {
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Grid
         container
         justifyContent="center"
@@ -37,13 +38,14 @@ export default function ActivityDashboard({
                 borderRadius: "10px",
               }}
             >
-              {activities.map((activity) => (
+              {activities.map((activity, index) => (
                 <Grid item xs={12} key={activity.id}>
                   <ActivityList
                     activity={activity}
                     handleSelectActivity={handleSelectActivity}
                     closeForm={closeForm}
                     deleteActivity={deleteActivity}
+                    isNotLast={index !== activities.length - 1}
                   />
                 </Grid>
               ))}
@@ -63,6 +65,7 @@ export default function ActivityDashboard({
               closeForm={closeForm}
               activity={selectedActivity}
               createOrUpdate={createOrUpdate}
+              submitting={submitting}
             />
           )}
         </Grid>

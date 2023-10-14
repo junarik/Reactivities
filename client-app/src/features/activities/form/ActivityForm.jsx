@@ -6,7 +6,7 @@ import { createTheme } from "@mui/material/styles";
 import React from "react";
 import { useState, useEffect } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
+import { LoadingButton } from "@mui/lab";
 const cancelTheme = createTheme({
   components: {
     MuiButton: {
@@ -38,6 +38,16 @@ const submitTheme = createTheme({
             backgroundColor: "#388E3C", // Customize the submit button's background color for the active state
           },
         },
+        // Add style overrides for the loading state
+        containedLoading: {
+          backgroundColor: "#FF5722", // Customize the loading button's background color
+          "&:hover": {
+            backgroundColor: "#FF4500", // Customize the loading button's background color for the hover state
+          },
+          "&:active": {
+            backgroundColor: "#E64A19", // Customize the loading button's background color for the active state
+          },
+        },
       },
     },
   },
@@ -47,6 +57,7 @@ export default function ActivityForm({
   activity: selectedActivity,
   closeForm,
   createOrUpdate,
+  submitting,
 }) {
   const [activity, setActivity] = useState({
     id: "",
@@ -75,7 +86,8 @@ export default function ActivityForm({
     }
   }, [selectedActivity]);
 
-  function handleSubmit() {
+  function handleSubmit(e) {
+    e.preventDefault();
     createOrUpdate(activity);
   }
 
@@ -148,9 +160,20 @@ export default function ActivityForm({
             <Button variant="contained" theme={cancelTheme} onClick={closeForm}>
               Cansel
             </Button>
-            <Button type="submit" variant="contained" theme={submitTheme}>
+            <LoadingButton
+              loading={submitting}
+              type="submit"
+              variant="contained"
+              sx={{
+                ...submitTheme.components.MuiButton.styleOverrides.contained,
+                ...(submitting
+                  ? submitTheme.components.MuiButton.styleOverrides
+                      .containedLoading
+                  : {}),
+              }}
+            >
               Submit
-            </Button>
+            </LoadingButton>
           </Stack>
         </Stack>
       </form>

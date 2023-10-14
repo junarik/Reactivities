@@ -7,6 +7,7 @@ export default function ActivityList({
   handleSelectActivity,
   closeForm,
   deleteActivity,
+  isNotLast,
 }) {
   return (
     <>
@@ -71,7 +72,8 @@ export default function ActivityList({
             </Button>
           </Box>
         </Box>
-        <Divider variant="middle" />
+
+        {isNotLast && <Divider variant="middle" />}
       </Paper>
     </>
   );
