@@ -1,6 +1,8 @@
 import React from "react";
 import { Divider, Paper, Typography, Button, Box } from "@mui/material";
 import "./fad.css";
+import { LoadingButton } from "@mui/lab";
+import { useState } from "react";
 
 export default function ActivityList({
   activity,
@@ -8,7 +10,15 @@ export default function ActivityList({
   closeForm,
   deleteActivity,
   isNotLast,
+  submitting,
 }) {
+  const [target, setTarget] = useState("");
+
+  function handleActivityDelete(e, activity) {
+    setTarget(e.currentTarget.name);
+    deleteActivity(activity);
+  }
+
   return (
     <>
       <Paper square elevation={0}>
@@ -48,16 +58,18 @@ export default function ActivityList({
             </Typography>
           </Box>
           <Box sx={{ alignSelf: "end", display: "flex", gap: 1 }}>
-            <Button
+            <LoadingButton
+              name={activity.id}
               className="viewListButton"
               variant="contained"
               disableElevation
               color="error"
               sx={{ borderRadius: "4px" }}
-              onClick={() => deleteActivity(activity)}
+              onClick={(e) => handleActivityDelete(e, activity)}
+              loading={submitting && target === activity.id}
             >
               Delete
-            </Button>
+            </LoadingButton>
             <Button
               className="viewListButton"
               onClick={() => {

@@ -46,6 +46,7 @@ export default function ActivityDashboard({
                     closeForm={closeForm}
                     deleteActivity={deleteActivity}
                     isNotLast={index !== activities.length - 1}
+                    submitting={submitting}
                   />
                 </Grid>
               ))}
