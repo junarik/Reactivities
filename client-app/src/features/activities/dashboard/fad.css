@@ -1,12 +1,12 @@
 .ActivityTag {
-  display: block;
-  margin-left: 10px;
-}
-
-.viewListButton {
-  transition: all 0.2s !important;
-}
-
-.viewListButton:hover {
-  transform: scale(1.1);
-}
+    display: block;
+    margin-left: 10px;
+  }
+  
+  .viewListButton {
+    transition: all 0.2s !important;
+  }
+  
+  .viewListButton:hover {
+    transform: scale(1.1);
+  }
