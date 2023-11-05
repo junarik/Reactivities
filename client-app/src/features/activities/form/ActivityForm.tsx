@@ -1,27 +1,37 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { LoadingButton } from "@mui/lab";
 import { Paper, Stack, TextField, Button } from "@mui/material";
 import { DateTimeField, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useStore } from "../../../app/stores/Store";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Activity } from "../../../app/models/Activity";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { v4 as uuid } from "uuid";
 
 export default observer(function ActivityForm() {
   const { activityStore } = useStore();
-  const { selectedActivity, createActivity, updateActivity, loading } =
-    activityStore;
-  const initialState = selectedActivity ?? {
-    id: "",
-    title: "",
-    category: "",
-    description: "",
-    date: "",
-    city: "",
-    venue: "",
-  };
+  const { createActivity, updateActivity,
+    loading, loadActivity, loadingInitial } = activityStore;
 
-  const [activity, setActivity] = useState(initialState);
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [activity, setActivity] = useState<Activity>({
+    id: '',
+    title: '',
+    category: '',
+    description: '',
+    date: '',
+    city: '',
+    venue: ''
+  });
+
+  useEffect(() => {
+    if (id) loadActivity(id).then(activity => setActivity(activity!));
+  }, [id, loadActivity])
 
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
 
@@ -29,19 +39,24 @@ export default observer(function ActivityForm() {
     if (activity.date) {
       const initialDate = dayjs(activity.date);
       setSelectedDate(initialDate);
-    } else {
+    }
+    else {
       setSelectedDate(dayjs());
     }
   }, [activity.date]);
 
   function handleSubmit() {
     activity.date = selectedDate!.toISOString();
-    activity.id ? updateActivity(activity) : createActivity(activity);
+    if (!activity.id) {
+      activity.id = uuid();
+      createActivity(activity).then(() => navigate(`/activities/${activity.id}`))
+    }
+    else {
+      updateActivity(activity).then(() => navigate(`/activities/${activity.id}`))
+    }
   }
 
-  function handleInputChange(
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
     setActivity({ ...activity, [name]: value });
   }
@@ -50,9 +65,11 @@ export default observer(function ActivityForm() {
     setSelectedDate(date);
   }
 
+  if (loadingInitial) return <LoadingComponent />
+
   return (
     <Paper sx={{ p: "12px", borderRadius: "10px" }}>
-      <form autoComplete="off">
+      <form autoComplete="off" >
         <Stack spacing={1}>
           <TextField
             value={activity.title}
@@ -108,17 +125,15 @@ export default observer(function ActivityForm() {
           />
 
           <Stack direction="row" spacing={1} justifyContent="flex-end">
-            <Button variant="contained">Cancel</Button>
-            <LoadingButton
-              loading={loading}
-              variant="contained"
-              onClick={handleSubmit}
-            >
+            <Button variant="contained" component={Link} to={`/activities/${activity.id}`}>
+              Cancel
+            </Button>
+            <LoadingButton loading={loading} variant="contained" onClick={handleSubmit}>
               Submit
             </LoadingButton>
           </Stack>
         </Stack>
       </form>
     </Paper>
-  );
-});
+  )
+})
