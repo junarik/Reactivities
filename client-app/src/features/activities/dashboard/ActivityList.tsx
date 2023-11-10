@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { Activity } from "../../../app/models/Activity";
 import "./fad.css";
 import { observer } from "mobx-react-lite";
@@ -14,7 +14,15 @@ export default observer(function ActivityList() {
     <>
       {groupedActivities.map(([group, activities]) => (
         <Fragment key={group}>
-          <Typography variant="h2" sx={{ mt: "4px" }}>
+          <Typography
+            sx={{
+              color: "#BA55D3",
+              fontWeight: "bold",
+              fontSize: "16px",
+              ml: "8px",
+              mb: "4px",
+            }}
+          >
             {group}
           </Typography>
           {activities.map((activity: Activity) => (
