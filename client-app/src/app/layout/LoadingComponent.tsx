@@ -6,7 +6,7 @@ export default function LoadingComponent() {
         <>
             <Typography sx={{ m: 45 }} align="center" variant="h5">Loading...</Typography>
             <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                sx={{ color: '#fff', zIndex: (theme: { zIndex: { drawer: number; }; }) => theme.zIndex.drawer + 1 }}
                 open={true}
             >
                 <CircularProgress color="inherit" />
