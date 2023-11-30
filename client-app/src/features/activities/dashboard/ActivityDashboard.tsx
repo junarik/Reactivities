@@ -1,6 +1,8 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, ListItemIcon, ListItemText, MenuItem, MenuList, Paper} from "@mui/material";
 import ActivityList from "./ActivityList";
 import { observer } from "mobx-react-lite";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import Calendar from "react-calendar";
 
 export default observer(function ActivityDashboard() {
   return (
@@ -27,9 +29,29 @@ export default observer(function ActivityDashboard() {
           </Grid>
         </Grid>
         <Grid item xs={5}>
-          <Typography variant="h5">Activity filters</Typography>
+          <Paper sx={{mb: 1}}>
+            <MenuList>
+              <MenuItem divider={true}>
+                <ListItemIcon>
+                  <FilterAltIcon fontSize="large" />
+                </ListItemIcon>
+                <ListItemText>Filter</ListItemText>
+              </MenuItem>
+              <MenuItem divider={true}>
+                <ListItemText>All activities</ListItemText>
+              </MenuItem>
+              <MenuItem divider={true}>
+                <ListItemText>I'm going</ListItemText>
+              </MenuItem>
+              <MenuItem divider={true}>
+                <ListItemText>I'm hosting</ListItemText>
+              </MenuItem>
+            </MenuList>
+          </Paper>
+          <Calendar/>
         </Grid>
       </Grid>
+      
     </Container>
   );
 });

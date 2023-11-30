@@ -3,13 +3,12 @@ import {
   Button,
   Paper,
   Stack,
-  ThemeProvider,
   Typography,
-  createTheme,
 } from "@mui/material";
 import { Activity } from "../../../app/models/Activity";
 import { observer } from "mobx-react-lite";
 import { lime } from "@mui/material/colors";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const activityImageStyle = {
   filter: "brightness(30%)",

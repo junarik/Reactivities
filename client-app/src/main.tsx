@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./app/layout/styles.css";
+import 'react-calendar/dist/Calendar.css'
 import { router } from "./app/router/Routes";
 import { RouterProvider } from "react-router-dom";
 import { StoreContext, store } from "./app/stores/store";
