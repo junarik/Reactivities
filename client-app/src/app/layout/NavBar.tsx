@@ -39,6 +39,11 @@ function ResponsiveAppBar() {
             >
               Activities
             </Button>
+            <Button component={NavLink}
+              to="/errors"
+              sx={{ my: 2, color: "white", display: "block" }}>
+              Errors
+            </Button>
             <Button
               variant="contained"
               component={NavLink}
